@@ -1,0 +1,341 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+/* ============================================================
+   WebTeamRoles — scoped with `.wtr-` prefix.
+   No page background is set — this section is transparent by
+   design so it can be dropped onto any background.
+   ============================================================ */
+
+.wtr-root {
+  --ink: #eef1f8;
+  --ink-dim: #aab2c5;
+  --panel: rgba(18, 22, 34, 0.55);
+  --panel-border: rgba(255, 255, 255, 0.09);
+  background: transparent;
+  color: var(--ink);
+  font-family: "Inter", system-ui, sans-serif;
+  padding: clamp(24px, 5vw, 56px) clamp(16px, 5vw, 40px);
+  box-sizing: border-box;
+}
+.wtr-root * {
+  box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+.wtr-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto clamp(24px, 4vw, 40px);
+  animation: wtr-fade-in 0.7s ease both;
+}
+.wtr-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3.6vw, 2.6rem);
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+.wtr-title-accent {
+  color: #ff5d5d;
+  font-style: italic;
+}
+.wtr-subtitle {
+  color: var(--ink-dim);
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  margin: 0;
+}
+
+/* ---------- Spectrum bar ---------- */
+.wtr-spectrum {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 640px;
+  margin: 0 auto clamp(32px, 5vw, 52px);
+  animation: wtr-fade-in 0.7s ease 0.1s both;
+}
+.wtr-spectrum-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.wtr-spectrum-track {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ffd447, #ff9f45 45%, #ff5d5d 100%);
+  overflow: visible;
+}
+.wtr-spectrum-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  width: 30%;
+  animation: wtr-sweep 3.2s ease-in-out infinite;
+  mix-blend-mode: overlay;
+}
+.wtr-spectrum-dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dot-color);
+  box-shadow: 0 0 0 3px rgba(10, 12, 20, 0.6), 0 0 10px var(--dot-color);
+  transform: translate(-50%, -50%);
+  animation: wtr-pulse 2.4s ease-in-out infinite;
+}
+
+/* ---------- Grid ---------- */
+.wtr-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 2vw, 22px);
+  max-width: 1180px;
+  margin: 0 auto;
+  justify-items: center;
+}
+
+/* Tablet: 2 per row */
+@media (min-width: 620px) {
+  .wtr-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Desktop: 3 per row — 5 cards resolve to 3 on row one, 2 on row two */
+@media (min-width: 940px) {
+  .wtr-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.wtr-card-wrap {
+  width: 100%;
+  max-width: 340px;
+}
+
+.wtr-card-wrap {
+  perspective: 1400px;
+  animation: wtr-card-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+.wtr-card {
+  position: relative;
+  min-height: 300px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  outline: none;
+}
+.wtr-card.is-flipped {
+  transform: rotateY(180deg);
+}
+.wtr-card:focus-visible {
+  box-shadow: 0 0 0 3px var(--accent);
+  border-radius: 18px;
+}
+
+.wtr-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+}
+.wtr-card-wrap:hover .wtr-face-front {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px -12px var(--accent);
+  transform: translateY(-4px);
+}
+
+/* front face */
+.wtr-face-front {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.wtr-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  margin-bottom: 16px;
+  transition: transform 0.4s ease;
+}
+.wtr-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.wtr-card-wrap:hover .wtr-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+.wtr-role-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.15rem;
+  margin: 0 0 6px;
+}
+.wtr-role-tagline {
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+  margin: 0 0 14px;
+}
+.wtr-spectrum-chip {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+.wtr-flip-hint {
+  margin-top: auto;
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.wtr-card-wrap:hover .wtr-flip-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* back face */
+.wtr-face-back {
+  transform: rotateY(180deg);
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.wtr-back-heading {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+  margin: 0 0 12px;
+  color: var(--accent);
+}
+.wtr-learn-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wtr-learn-list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.85rem;
+  color: var(--ink);
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateX(-6px);
+}
+.wtr-card.is-flipped .wtr-learn-list li {
+  animation: wtr-li-in 0.45s ease forwards;
+  animation-delay: calc(0.15s + var(--li) * 0.08s);
+}
+.wtr-learn-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.wtr-become {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--panel-border);
+}
+.wtr-become-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+}
+.wtr-become-text {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes wtr-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes wtr-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes wtr-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(420%);
+  }
+}
+@keyframes wtr-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(10, 12, 20, 0.6), 0 0 6px var(--dot-color);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(10, 12, 20, 0.4), 0 0 14px var(--dot-color);
+  }
+}
+@keyframes wtr-li-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .wtr-root * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+  .wtr-spectrum-label {
+    display: none;
+  }
+  .wtr-card {
+    min-height: 340px;
+  }
+}
